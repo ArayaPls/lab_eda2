@@ -198,7 +198,7 @@ void imprimeEstadoJuego(nodo* mazo, nodo* pozo){
 	printf("\n");
 }
 
-int estableceTurno(char cantidadJugadores[], int turno, char sentido){
+int estableceTurno(int cantidadJugadores, int turno, char sentido){
 
 	int turnoNuevo;
 	if(sentido){
@@ -208,9 +208,9 @@ int estableceTurno(char cantidadJugadores[], int turno, char sentido){
 			turnoNuevo = turno-1;
 	}
 	if(turnoNuevo < 0){
-		turnoNuevo = atoi(cantidadJugadores)-1;
+		turnoNuevo = cantidadJugadores-1;
 	}
-	else if(turnoNuevo > atoi(cantidadJugadores)-1){
+	else if(turnoNuevo > cantidadJugadores-1){
 		turnoNuevo = 0;
 	}
 	return turnoNuevo;

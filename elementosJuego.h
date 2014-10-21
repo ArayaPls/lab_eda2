@@ -91,9 +91,13 @@ nodo* crearMazo(void);
 void imprimeEstadoJuego(nodo* mazo, nodo* pozo);
 
 /**
-	Cuenta los turnos.
+	@brief Avanza los turnos.
+	@param cantidadJugadores Cantidad de jugadores.
+	@param turno Turno actual.
+	@param sentido Direccion en la cual los turnos avanzan.
+	@returns Retorna el turno que corresponde.
 */
-int estableceTurno(char cantidadJugadores[], int turno, char sentido);
+int estableceTurno(int cantidadJugadores, int turno, char sentido);
 
 /**
 	@brief Efectos de las acciones de la interaccion con el jugador.

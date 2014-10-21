@@ -154,7 +154,7 @@ void main(){
 
 		while(bucleTurnosJuego){
 
-			turno = estableceTurno(cantidadJugadores,turno, sentido);
+			turno = estableceTurno(atoi(cantidadJugadores),turno, sentido);
 			//imprime estado del juego
 			imprimeEstadoJuego(mazo,pozo);
 			//obtiene el jugador que le corresponde el turno.
