@@ -104,9 +104,9 @@ int estableceTurno(char cantidadJugadores[], int turno, char sentido);
 	@param mano
 	@param mazo
 	@param nodo
-	@returns void
+	@returns Retorna falso cuando el turno no fue exitoso.
 */
-void logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[]);
+boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[]);
 
 /**
 */

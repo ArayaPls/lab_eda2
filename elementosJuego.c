@@ -33,7 +33,6 @@ void mostrarMano(nodo* lista){
 	printf("  0- Robar carta.\n");
 	listarCartas(lista);
 	printf("\\-----------------------------------------/\n");
-	printf("Botar carta: ");
 }
 
 void listarCartas(nodo* lista){
@@ -217,7 +216,7 @@ int estableceTurno(char cantidadJugadores[], int turno, char sentido){
 	return turnoNuevo;
 }
 
-void logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[]){
+boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[]){
 	int largoMano = largo(*mano);
 	int opcionNumerica = atoi(opcion);
 	
@@ -229,6 +228,7 @@ void logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[
 		*mano = push(*mano, robada->dato, robada->dato2);
 		//borramos carta del mazo
 		*mazo = borrarTipo(*mazo, robada->dato, robada->dato2);
+		return FALSE;
 	}
 
 	//para tirar una carta
@@ -240,13 +240,18 @@ void logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[
 			*pozo = push(*pozo, descartada->dato, descartada->dato2);
 			//la borra de la mano...
 			*mano = borrarTipo(*mano, descartada->dato, descartada->dato2);	
+			return TRUE;
 		}
-		else
-			printf("NOOOU!");
+		else{
+			printf("No puede botar esa carta! [ENTER]\n");
+			pausa();
+			return FALSE;
+			
+		}
 	}
 	//condicion de borde para tirar carta
 	else if(opcionNumerica > largoMano){
-		printf("nope!\n");
+		return FALSE;
 	}
 }
 

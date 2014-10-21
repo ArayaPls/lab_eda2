@@ -8,6 +8,7 @@
 #include <stdlib.h>
 
 void limpiar(){
+	//por mientras uso system
 	system("cls");
 }
 void imprimeMenuPrincipal(){
