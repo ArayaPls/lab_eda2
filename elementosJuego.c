@@ -180,10 +180,9 @@ void imprimeTipo(int cod){
 	}
 }
 
-
 nodo* crearMazo(){
 
-	nodo* mazo;
+	nodo* mazo = NULL;
 	srand(time(NULL));
 
 	char color;
@@ -229,7 +228,7 @@ void imprimeEstadoJuego(nodo* mazo, nodo* pozo){
 
 int estableceTurno(int cantidadJugadores, int turno, char sentido){
 
-	int turnoNuevo;
+	int turnoNuevo = 0;
 	if(sentido){
 			turnoNuevo = turno+1;
 	}
@@ -314,7 +313,7 @@ boolean reglaRobarCarta(nodo* mano, nodo* pozo){
 boolean jugadaAutomatica(nodo** mano, nodo** mazo, nodo** pozo, int* turno){
 	//por cada carta de la mano se aplica regla "reglaBotarCarta()"
 	int i, largoMano = largo(*mano);
-	nodo* descarta; 
+	nodo* descarta = NULL; 
 
 	//busca una carta en la mano y tira la primera que puede
 	for(i=0;i<largoMano;i++){
@@ -346,10 +345,10 @@ nodo* volteaPozo(nodo** mazo, nodo** pozo){
 
 	//randomiza el mazo colocando cartas en una pila de forma aleatoria
 	nodo* mazoRandom = NULL;
+	nodo* elemento = NULL;
 	int largoPozo = largo(*pozo);
 	int i;
 	int indiceRandom;
-	nodo* elemento;
 	for(i=0;i<largoPozo; i++){
 
 		indiceRandom = rand()%(largo(*pozo)-1);

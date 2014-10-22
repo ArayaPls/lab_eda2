@@ -40,12 +40,12 @@ nodo* anular(nodo* lista){
 		return lista;
 	}
 	nodo* actual = lista;
-	nodo* siguiente = lista;
-	while(siguiente != NULL){
-		siguiente = actual -> sig;
+	nodo* auxSig = lista;
+	while(auxSig != NULL){
+		auxSig = actual -> sig;
 		free(actual);
 		actual = NULL;
-		actual = siguiente;
+		actual = auxSig;
 	}
 	free(lista);
 	lista = NULL;
