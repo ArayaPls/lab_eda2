@@ -40,7 +40,7 @@ void imprimeImagenPrincipal(char* tabulado){
 	printf("%s  \\_____/|_| \\_|\\____/ \n\n",tabulado);
  	printf("%s=========================\n",tabulado);
 	printf("%s====================v1.0=\n",tabulado);
-	printf("%s   por Sebastian Araya");
+	printf("%s   por Sebastian Araya",tabulado);
 
 }
 
