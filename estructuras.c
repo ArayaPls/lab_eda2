@@ -42,6 +42,7 @@ nodo* anular(nodo* lista){
 	nodo* actual = lista;
 	nodo* siguiente = lista;
 	while(siguiente != NULL){
+		printf("*");
 		siguiente = actual -> sig;
 		free(actual);
 		actual = NULL;
