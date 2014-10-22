@@ -44,6 +44,15 @@ typedef char boolean;
 #define FALSE 0
 
 /**
+*/
+void imprimirCartitas(int numero);
+
+/**
+	@imprime el tipo del jugador y cuantas cartas tiene.
+*/
+void imprimeEstadoJugadores(nodo* jugador, nodo** mano);
+
+/**
 	Muestra las cartas de forma comrensible.
 */
 void mostrarCartas(nodo* lista);
@@ -51,12 +60,12 @@ void mostrarCartas(nodo* lista);
 /**
 	Muestra mano del jugador.
 */
-void mostrarMano(nodo* lista);
+void mostrarMano(nodo* lista, char* tab);
 
 /**
 	Lista las cartas.
 */
-void listarCartas(nodo* lista);
+void listarCartas(nodo* lista, char* tab);
 
 /**
 	Muestra turnos.
@@ -113,7 +122,25 @@ int estableceTurno(int cantidadJugadores, int turno, char sentido);
 boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[]);
 
 /**
+	@brief Regla que limita cuando se pude botar una carta.
 */
 boolean reglaBotarCarta(nodo* carta, nodo* pozo);
+
+/**
+	@brief Regla que limita cuando se puede robar una carta.
+*/
+boolean reglaRobarCarta(nodo* mano, nodo* pozo);
+
+/**
+	@brief Logica de la jugada de la computadora.
+*/
+boolean jugadaAutomatica(nodo** mano, nodo** mazo, nodo** pozo, int* turno);
+
+/**
+	@brief Da vuelta las cartas del pozo al mazo y coloca una carta en el pozo.
+
+	@returns Retorna el mazo nuevo.
+*/
+nodo* volteaPozo(nodo** mazo, nodo** pozo);
 
 #endif
