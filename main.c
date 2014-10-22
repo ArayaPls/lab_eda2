@@ -31,7 +31,7 @@ void main(){
 	imprimeImagenPrincipal("        ");
 	printf("\n\n\tPulsa [ENTER] para comenzar!\n");
 	pausa();
-	srand(time(NULL));
+	//srand(time(NULL));
 	char opcion[STRING_MAX];
 	char opcionJuego[STRING_MAX];
 	boolean menu = TRUE; //variable del bucle del menu de opciones inicial
@@ -194,6 +194,7 @@ void main(){
 							imprimeEstadoJugadores(jugadores,manos);
 							printf("\n\t\aFELICIDADES, HAS GANADO!!!\n\n");
 							bucleTurnosJuego = FALSE;
+							printf("Presione [ENTER] para ontinuar...");
 							pausa();
 						}
 					}
@@ -231,6 +232,7 @@ void main(){
 						imprimeEstadoJugadores(jugadores,manos);
 						printf("\n\t\aLA COMPUTADORA %d, HA GANADO!\n",turno+1);
 						bucleTurnosJuego = FALSE;
+						printf("Presione [ENTER] para continuar...");
 						pausa();
 					}
 				}
