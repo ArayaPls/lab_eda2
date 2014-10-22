@@ -1,6 +1,6 @@
 /**
 	@file main.c
-	@brief Archivo principal del juego UNO.
+	@brief Archivo principal del trabajo N2.
 	@autor Sebastian Araya Vallejos.
 	@date 10/2014
 */
@@ -27,11 +27,12 @@ typedef struct nodoSimple{
 }nodo;
 
 void main(){
-	//mostramos una imagen super fancy
-	imprimeImagenPrincipal("        ");
-	printf("\n\n\tPulsa [ENTER] para comenzar!\n");
+	printf("juego UNO!\n");
+	//aqui va el logo pro del juego...
+	printf("\tPulsa [ENTER] para comenzar!\n");
 	pausa();
 	srand(time(NULL));
+	int r = rand();	
 	char opcion[STRING_MAX];
 	char opcionJuego[STRING_MAX];
 	boolean menu = TRUE; //variable del bucle del menu de opciones inicial
@@ -39,9 +40,9 @@ void main(){
 	boolean buclePreJuego = FALSE; //variable del bucle de las opciones del juego
 	boolean bucleTurnosJuego = FALSE; //variable del bucle de las jugadas
 
-	//============================================
+	//==================================================
 	// BUCLE MENU PRINCIPAL
-	//--------------------------------------------
+	//==================================================
 	while(menu){
 		//limpia la consola
 		limpiar();
@@ -62,7 +63,7 @@ void main(){
 
 		//====================================================
 		// BUCLE PRE-JUEGO
-		//----------------------------------------------------
+		//====================================================
 		
 		char cantidadJugadores[STRING_MAX];
 		nodo* jugadores = NULL; //jugadores
@@ -71,9 +72,7 @@ void main(){
 		nodo** manos = NULL; // cartas de los jugadores (puntero doble porque es un malloc de nodo*)
 
 		while(buclePreJuego){
-			//====================================================
-			// CONDICIONES PRE-JUEGO
-			//----------------------------------------------------
+			//condiciones pre juego...
 			limpiar();
 			printf("Condiciones pre-juego.\n");
 			
@@ -87,7 +86,7 @@ void main(){
 				buclePreJuego = FALSE;
 			}
 			else{
-				//hacemos un arreglo de listas enlazadas que seran las manos.
+				//agrega jugadores a turnos (el jugador humano es el primero)
 				manos = (nodo**)malloc(sizeof(nodo*)*atoi(cantidadJugadores));
 				
 				//generamos el mazo del juego con orden aleatorio
@@ -104,8 +103,9 @@ void main(){
 					for(t=0;t<atoi(cantidadJugadores)-1;t++)
 					{
 						jugadores = push(jugadores, JUGADOR_CPU,-1);
+						//sacamos del mazo 7 cartas para la mano de cada jugador...
 					}
-					//...y al humano.
+					//...y humano.
 					jugadores = push(jugadores, JUGADOR_HUMANO,-1);
 
 				//agregamos las manos
@@ -123,11 +123,12 @@ void main(){
 						mazo = borrarTipo(mazo, cartaInicial->dato,cartaInicial->dato2);
 					}
 				}
-				//muestra los turnos del juego antes de comenzar.
+				
+				
 				muestraTurnos(jugadores);
 			//borrar
-				//printf("largo del mazo: %d\n", largo(mazo));
-				//listarCartas(mazo);
+				printf("largo del mazo: %d\n", largo(mazo));
+				listarCartas(mazo);
 			//fin borrar
 				printf("\nPresione ENTER para comenzar la partida...");
 				pausa();
@@ -138,13 +139,13 @@ void main(){
 				bucleTurnosJuego = TRUE;
 			}
 		}
-		//----------------------------------------------------------
+		//==========================================================
 		// FIN bucle pre-juego
 		//==========================================================
 
 		//==========================================================
 		// BUCLE TURNOS DEL JUEGO
-		//----------------------------------------------------------
+		//==========================================================
 		limpiar();
 		int turno=-1; 	//turno actual
 		char opcionJuego[STRING_MAX]; 	//entrada por teclado
@@ -153,11 +154,6 @@ void main(){
 
 		while(bucleTurnosJuego){
 
-			//verifica si quedan cartas en el mazo
-			if(largo(mazo)<1){
-				//si no hay cartas voltea el pozo
-				mazo = volteaPozo(&mazo,&pozo);
-			}
 			turno = estableceTurno(atoi(cantidadJugadores),turno, sentido);
 			//imprime estado del juego
 			imprimeEstadoJuego(mazo,pozo);
@@ -167,19 +163,18 @@ void main(){
 			if( jugadorActual->dato == JUGADOR_HUMANO){
 				printf("Tu turno!\n");
 				//muestra la mano del jugador
-				mostrarMano(manos[turno],"  ");
-				//imprimirCartitas(largo(manos[turno]));
+				mostrarMano(manos[turno]);
 
 				//interaccion en turno
-				printf("  Botar carta: ");
+				printf("Botar carta: ");
 				fflush(stdin);
 				fgets(opcionJuego,STRING_MAX,stdin);
 				//reaccion a la opcion
 					//==================================================
-					// JUGADA DEL JUGADOR HUMANO
-					//--------------------------------------------------
+					// Logica de jugada
+					//**************************************************
 
-					//si el turno no es exitoso, no se avanza al siguiente jugador...
+					//si el turno no es exitoso, no se avanzaal siguiente jugador...
 					if(!logicaTurno(&manos[turno], &mazo, &pozo, &turno, opcionJuego)){
 						if(sentido){
 							turno--;
@@ -189,10 +184,7 @@ void main(){
 					}
 					else{
 						if(largo(manos[turno])==0){
-							limpiar();
-							printf("\n\t\aFELICIDADES, HAS GANADO!!!\n\n");
-							imprimeEstadoJugadores(jugadores,manos);
-							printf("\n\t\aFELICIDADES, HAS GANADO!!!\n\n");
+							printf("\t\aFELICIDADES, HAS GANADO!!!\n");
 							bucleTurnosJuego = FALSE;
 							pausa();
 						}
@@ -202,50 +194,24 @@ void main(){
 					if(atoi(opcionJuego) == -1){
 						bucleTurnosJuego = FALSE;
 					}
-					//--------------------------------------------------
-					// FIN jugada del jugador humano
+					//**************************************************
 					//==================================================
 				//este "limpiar" permite que se vean solo las jugadas
 				//de las CPU que se hacen hasta que le toca al usuario.
 				limpiar();
 			}
 			else{
-				//==========================================================
-				//JUGADA AUTOMATICA DE COMPUTADORAS
-				//----------------------------------------------------------
-				printf("Turno Computadora %d, mano:", turno+1);
-				imprimirCartitas(largo(manos[turno]));
-				//si el turno no es exitoso, no se avanza al siguiente jugador...
-				if(!jugadaAutomatica(&manos[turno], &mazo, &pozo, &turno)){
-					if(sentido){
-						turno--;
-					}
-					else
-						turno++;
-				}
-				else{
-					if(largo(manos[turno])==0){
-						limpiar();
-						imprimeEstadoJuego(mazo,pozo);
-						printf("\n\t\aLA COMPUTADORA %d, HA GANADO!\n",turno+1);
-						imprimeEstadoJugadores(jugadores,manos);
-						printf("\n\t\aLA COMPUTADORA %d, HA GANADO!\n",turno+1);
-						bucleTurnosJuego = FALSE;
-						pausa();
-					}
-				}
-				//-----------------------------------------------------------
-				// FIN jugada automatica de computadoras
-				//===========================================================
+				printf("Turno CPU %d\n", turno);
+				//aqui hacer jugada automatica de bots.
 			}
 		}
-		//--------------------------------------------------------------
+		//==============================================================
 		// FIN bucle turnos juego
 		//==============================================================
 
 		//======================================
 		// LIBERACION DE MEMORIA
-		//--------------------------------------
+		//======================================
 		//liberamos lista de jugadores
 		jugadores = anular(jugadores);
 		//libera el mazo
@@ -260,11 +226,10 @@ void main(){
 			}
 			free(manos);	
 		}
-		//-------------------------------------
-		// FIN liberacion memoria
-		//=====================================
+		//================================
+		//================================
 	}
-	//--------------------------------
+	//============================================
 	// FIN bucle menu principal
-	//================================
+	//============================================
 }

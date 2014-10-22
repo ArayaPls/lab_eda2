@@ -11,8 +11,5 @@ void limpiar(void);
 
 void imprimeMenuPrincipal(void);
 
-void imprimeImagenPrincipal(char* tabulado);
-
-void pausa(void);
 
 #endif

@@ -6,20 +6,10 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
 
 void limpiar(){
-	/*
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	/**/
-	#ifdef _WIN32
-	//para windows
-    system("cls");
-	#else
-    //para linux
-    system ("clear");
-	#endif
+	//por mientras uso system
+	system("cls");
 }
 void imprimeMenuPrincipal(){
 	printf("Menu\n");
@@ -28,24 +18,3 @@ void imprimeMenuPrincipal(){
 	printf("\n");
 	printf("\n");
 }
-
-void imprimeImagenPrincipal(char* tabulado){
-	printf("%s=========================\n",tabulado);
-	printf("%s=========================\n",tabulado);
-	printf("%s   _    _ _   _  ____\n",tabulado);
-	printf("%s  | |  | | \\ | |/ __ \\ \n",tabulado);
-	printf("%s  | |  | |  \\| | |  | |\n",tabulado);
-	printf("%s  | |  | | . ` | |  | |\n",tabulado);
-	printf("%s  | |__| | |\\  | |__| |\n",tabulado);
-	printf("%s  \\_____/|_| \\_|\\____/ \n\n",tabulado);
- 	printf("%s=========================\n",tabulado);
-	printf("%s====================v1.0=\n",tabulado);
-	printf("%s   por Sebastian Araya");
-
-}
-
-void pausa(){
-	fflush(stdin);
-	getc(stdin);
-}
-  
