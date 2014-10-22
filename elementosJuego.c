@@ -7,9 +7,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "elementosJuego.h"
 #include "estructuras.h"
-
+#include "adaptadorGrafico.h"
+	
 #define TRUE 1
 #define FALSE 0
 typedef char boolean;
@@ -20,22 +22,52 @@ typedef struct nodoSimple{
 	struct nodoSimple* sig;
 }nodo;
 
-void mostrarCartas(nodo* lista){
+void imprimirCartitas(int numero){
+	int i;
 	
-	printf("/--< CARTAS >-----------------------\\\n");
-	listarCartas(lista);
-	
+	for(i=0;i<numero;i++){
+		if(i==0){
+			printf("[");
+		}
+		if(i>=0)
+			printf("]");
+	}
 }
 
-void mostrarMano(nodo* lista){
-
-	printf("/--< Mi Mano >-----------------------------\\\n");
-	printf("  0- Robar carta.\n");
-	listarCartas(lista);
-	printf("\\-----------------------------------------/\n");
+void imprimeEstadoJugadores(nodo* jugador, nodo** mano){
+	int i;
+	int nTurnos = largo(jugador);
+	nodo* aux; 
+	printf("\n ____________________________________\n");
+    printf("|(turno)  -  (jugador)  |  (cartas)   /\n");
+    printf("|____________________________________/\n");
+    //por cada carta...
+	for(i=0; i<nTurnos;i++){
+		 aux = obtener(jugador,i);
+		 printf("  [%2d]    - ",i+1);
+		 //imprime el tipo de jugador
+		 if(aux->dato == JUGADOR_HUMANO){
+		 	printf("Player      | ");
+		 }
+		 else if(aux->dato == JUGADOR_CPU){
+		 	printf("Computadora | ");
+		 }
+		 imprimirCartitas(largo(mano[i]));
+		 printf("\n");
+	}	
+	printf(" ____________________________________\n");
+	printf("|____________________________________\\\n");
 }
 
-void listarCartas(nodo* lista){
+void mostrarMano(nodo* lista, char* tab){
+
+	printf("%s/==< Mi Mano >===================\\\n",tab);
+	printf("%s  0- Robar carta.\n", tab);
+	listarCartas(lista, tab);
+	printf("%s\\================================/\n",tab);
+}
+
+void listarCartas(nodo* lista, char* tab){
 
 	int i;
 	int nCartas = largo(lista);
@@ -43,7 +75,7 @@ void listarCartas(nodo* lista){
 	//por cada carta...
 	for(i=0; i<nCartas;i++){
 		 aux = obtener(lista,i);
-		 printf(" %2d- ",i+1);
+		 printf("%s %2d- ",tab, i+1);
 		 //imprime el color de la carta
 		 imprimeColor(aux->dato2);
 		 //imprimer el tipo de carta (numero o especial)
@@ -52,27 +84,26 @@ void listarCartas(nodo* lista){
 	}
 }
 
-void muestraTurnos(nodo* lista){
+void muestraTurnos(nodo* jugador){
 
 	int i;
-	int nTurnos = largo(lista);
+	int nTurnos = largo(jugador);
 	nodo* aux;
 	//por cada carta...
 	     printf("(turnos)    (jugador)\n");
 	for(i=0; i<nTurnos;i++){
-		 aux = obtener(lista,i);
-		 printf("  [%d]   Jugador - ",i+1);
+		 aux = obtener(jugador,i);
+		 printf("  [%d]   - ",i+1);
 		 //imprime el tipo de jugador
 		 if(aux->dato == JUGADOR_HUMANO){
 		 	printf("Player");
 		 }
 		 else if(aux->dato == JUGADOR_CPU){
-		 	printf("CPU");
+		 	printf("Computadora");
 		 }
 		 printf("\n");
 	}	
 }
-
 
 void imprimeColor(int cod){
 	if(cod == VERDE){
@@ -96,7 +127,6 @@ void imprimeColor(int cod){
 }
 
 void imprimeTipo(int cod){
-	
 	if(cod == CARTA_0){
 		printf("     0         ]");	
 	}
@@ -145,13 +175,8 @@ void imprimeTipo(int cod){
 	else{
 		printf("#corrupto#");	
 	}
-
 }
 
-void pausa(){
-	fflush(stdin);
-	getc(stdin);
-}
 
 nodo* crearMazo(){
 
@@ -175,6 +200,7 @@ nodo* crearMazo(){
 	mazo = push(mazo, CARTA_SUMA_4, NOCOLOR);
 	//cuatro cartas cambia color
 
+	//randomiza el mazo colocando cartas en una pila de forma aleatoria
 	nodo* mazoRandom = NULL;
 	int largoMazo = largo(mazo);
 	int i;
@@ -191,11 +217,11 @@ nodo* crearMazo(){
 }
 
 void imprimeEstadoJuego(nodo* mazo, nodo* pozo){
-	printf("  Cartas en mazo: %3d\n",largo(mazo));
+	printf("  Cartas en mazo: %d |",largo(mazo));
 	printf("  Carta en pozo: "); 
 	imprimeColor(obtener(pozo,0)->dato2); 
 	imprimeTipo(obtener(pozo,0)->dato);
-	printf("\n");
+	printf("\n\n");
 }
 
 int estableceTurno(int cantidadJugadores, int turno, char sentido){
@@ -221,7 +247,7 @@ boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opci
 	int opcionNumerica = atoi(opcion);
 	
 	//robar carta
-	if(opcionNumerica == 0){
+	if(opcionNumerica == 0 && reglaRobarCarta(*mano, *pozo)){
 		//saca carta de arriba del mazo
 		nodo* robada = obtener(*mazo, 0);
 		//la pone en la mano
@@ -240,31 +266,96 @@ boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opci
 			*pozo = push(*pozo, descartada->dato, descartada->dato2);
 			//la borra de la mano...
 			*mano = borrarTipo(*mano, descartada->dato, descartada->dato2);	
+			//notifica que temrina su turno
 			return TRUE;
 		}
 		else{
 			printf("No puede botar esa carta! [ENTER]\n");
 			pausa();
 			return FALSE;
-			
 		}
 	}
 	//condicion de borde para tirar carta
 	else if(opcionNumerica > largoMano){
 		return FALSE;
 	}
+	return FALSE;
 }
 
 boolean reglaBotarCarta(nodo* carta, nodo* pozo){
 	//si...
-	
 	if(carta->dato2 != obtener(pozo,0)->dato2 //los colores son diferentes
 		&& (carta->dato2 != NOCOLOR && obtener(pozo,0)->dato2 != NOCOLOR) //si no hay SIN COLOR
 		&& carta->dato != obtener(pozo,0)->dato 	// si tienen codigo diferente
-												){
+																		){
+		//notifica que no puede botar carta
 		return FALSE;
 	}
-	//holiasasd
+	//notifica que puede botar carta
 	return TRUE;
-	
+}
+
+boolean reglaRobarCarta(nodo* mano, nodo* pozo){
+	//por cada carta de la mano se aplica regla "reglaBotarCarta()"
+	int i, largoMano = largo(mano);
+	for(i=0;i<largoMano;i++){
+		if(reglaBotarCarta(obtener(mano,i),pozo)){
+			//notifica que no puede robar carta
+			return FALSE;
+		}
+	}
+	//notifica que puede robar carta
+	return TRUE;
+}
+
+boolean jugadaAutomatica(nodo** mano, nodo** mazo, nodo** pozo, int* turno){
+	//por cada carta de la mano se aplica regla "reglaBotarCarta()"
+	int i, largoMano = largo(*mano);
+	nodo* descarta; 
+
+	//busca una carta en la mano y tira la primera que puede
+	for(i=0;i<largoMano;i++){
+		//la carta que se quiere descartar...
+		descarta = obtener(*mano, i);
+		//chequeo si se puede botar carta...
+		if(reglaBotarCarta(descarta,*pozo)){
+			*pozo = push(*pozo, descarta->dato, descarta->dato2);
+			//la borra de la mano...
+			*mano = borrarTipo(*mano, descarta->dato, descarta->dato2);	
+			//notifica que su turno ha terminado
+			printf(", ha botado carta...\n");
+			return TRUE;
+		}
+	}
+	//si no pudo botar una carta roba...
+	//saca carta de arriba del mazo
+	nodo* robada = obtener(*mazo, 0);
+	//la pone en la mano
+	*mano = push(*mano, robada->dato, robada->dato2);
+	//borramos carta del mazo
+	*mazo = borrarTipo(*mazo, robada->dato, robada->dato2);
+	//notifica que su turno aun no termina
+	printf(", ha robado una carta...\n");
+	return FALSE;
+}
+
+nodo* volteaPozo(nodo** mazo, nodo** pozo){
+
+	//randomiza el mazo colocando cartas en una pila de forma aleatoria
+	nodo* mazoRandom = NULL;
+	int largoPozo = largo(*pozo);
+	int i;
+	int indiceRandom;
+	nodo* elemento;
+	for(i=0;i<largoPozo; i++){
+
+		indiceRandom = rand()%(largo(*pozo)-1);
+		elemento = obtener(*pozo, indiceRandom);
+		mazoRandom = push(mazoRandom, elemento->dato, elemento->dato2);
+	}
+	//luego la primera carta pasa a ser el pozo..
+	*pozo = obtener(mazoRandom, 0);
+	mazoRandom = pop(mazoRandom);
+
+	return mazoRandom;
 }
