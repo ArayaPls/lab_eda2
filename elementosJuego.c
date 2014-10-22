@@ -32,6 +32,9 @@ void imprimirCartitas(int numero){
 		if(i>=0)
 			printf("]");
 	}
+	if(i> 15){
+		printf(" (jaja XD)");
+	}
 }
 
 void imprimeEstadoJugadores(nodo* jugador, nodo** mano){
@@ -354,7 +357,7 @@ nodo* volteaPozo(nodo** mazo, nodo** pozo){
 		mazoRandom = push(mazoRandom, elemento->dato, elemento->dato2);
 	}
 	//luego la primera carta pasa a ser el pozo..
-	*pozo = obtener(mazoRandom, 0);
+	*pozo = push(*pozo, obtener(mazoRandom, 0)->dato, obtener(mazoRandom, 0)->dato2);
 	mazoRandom = pop(mazoRandom);
 
 	return mazoRandom;
