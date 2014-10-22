@@ -1,6 +1,6 @@
 /**
 	@file main.c
-	@brief Archivo principal del trabajo N2.
+	@brief Archivo principal del juego UNO.
 	@autor Sebastian Araya Vallejos.
 	@date 10/2014
 */
@@ -27,7 +27,9 @@ typedef struct nodoSimple{
 }nodo;
 
 void main(){
-
+	//mostramos una imagen super fancy
+	imprimeImagenPrincipal("        ");
+	printf("\n\n\tPulsa [ENTER] para comenzar!\n");
 	pausa();
 	srand(time(NULL));
 	int r = rand();	
@@ -37,10 +39,9 @@ void main(){
 	boolean juego = FALSE; //variable del bucle del juego
 	boolean buclePreJuego = FALSE; //variable del bucle de las opciones del juego
 	boolean bucleTurnosJuego = FALSE; //variable del bucle de las jugadas
-
-	//==================================================
+	//============================================
 	// BUCLE MENU PRINCIPAL
-	//==================================================
+	//--------------------------------------------
 	while(menu){
 		//limpia la consola
 		limpiar();
