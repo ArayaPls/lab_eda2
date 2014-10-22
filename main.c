@@ -29,16 +29,7 @@ typedef struct nodoSimple{
 void main(){
 	printf("juego UNO!\n");
 	//aqui va el logo pro del juego...
-	printf("\tPulsa [ENTER] para comenzar!\n");
-	pausa();
-	srand(time(NULL));
-	int r = rand();	
-	char opcion[STRING_MAX];
-	char opcionJuego[STRING_MAX];
-	boolean menu = TRUE; //variable del bucle del menu de opciones inicial
-	boolean juego = FALSE; //variable del bucle del juego
-	boolean buclePreJuego = FALSE; //variable del bucle de las opciones del juego
-	boolean bucleTurnosJuego = FALSE; //variable del bucle de las jugadas
+
 
 	//==================================================
 	// BUCLE MENU PRINCIPAL
