@@ -119,22 +119,22 @@ int estableceTurno(int cantidadJugadores, int turno, char sentido);
 	@param nodo
 	@returns Retorna falso cuando el turno no fue exitoso.
 */
-boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[]);
+boolean logicaTurno(nodo** jugadores, nodo** mano, nodo** mazo, nodo** pozo, int* turno, char* sentido,char opcion[], char colorCambio);
 
 /**
 	@brief Regla que limita cuando se pude botar una carta.
 */
-boolean reglaBotarCarta(nodo* carta, nodo* pozo);
+boolean reglaBotarCarta(nodo* carta, nodo* pozo, char colorCambio);
 
 /**
 	@brief Regla que limita cuando se puede robar una carta.
 */
-boolean reglaRobarCarta(nodo* mano, nodo* pozo);
+boolean reglaRobarCarta(nodo* mano, nodo* pozo, char colorCambio);
 
 /**
 	@brief Logica de la jugada de la computadora.
 */
-boolean jugadaAutomatica(nodo** mano, nodo** mazo, nodo** pozo, int* turno);
+boolean jugadaAutomatica(nodo** jugadores, nodo** mano, nodo** mazo, nodo** pozo, int* turno, char* sentido,char colorCambio);
 
 /**
 	@brief Da vuelta las cartas del pozo al mazo y coloca una carta en el pozo.

@@ -30,16 +30,16 @@ void imprimeMenuPrincipal(){
 }
 
 void imprimeImagenPrincipal(char* tabulado){
-	printf("%s=========================\n",tabulado);
-	printf("%s=========================\n",tabulado);
-	printf("%s   _    _ _   _  ____\n",tabulado);
-	printf("%s  | |  | | \\ | |/ __ \\ \n",tabulado);
-	printf("%s  | |  | |  \\| | |  | |\n",tabulado);
-	printf("%s  | |  | | . ` | |  | |\n",tabulado);
-	printf("%s  | |__| | |\\  | |__| |\n",tabulado);
-	printf("%s  \\_____/|_| \\_|\\____/ \n\n",tabulado);
- 	printf("%s=========================\n",tabulado);
-	printf("%s====================v1.0=\n",tabulado);
+	printf("%s=============================\n",tabulado);
+	printf("%s=============================\n",tabulado);
+	printf("%s     _    _ _   _  ____\n",tabulado);
+	printf("%s    | |  | | \\ | |/ __ \\ \n",tabulado);
+	printf("%s    | |  | |  \\| | |  | |\n",tabulado);
+	printf("%s    | |  | | . ` | |  | |\n",tabulado);
+	printf("%s    | |__| | |\\  | |__| |\n",tabulado);
+	printf("%s    \\_____/|_| \\_|\\____/ \n\n",tabulado);
+ 	printf("%s=============================\n",tabulado);
+	printf("%s========================v1.0=\n",tabulado);
 	printf("%s   por Sebastian Araya",tabulado);
 
 }

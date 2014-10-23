@@ -219,8 +219,7 @@ nodo* crearMazo(){
 }
 
 void imprimeEstadoJuego(nodo* mazo, nodo* pozo){
-	printf("  Cartas en mazo: %d |",largo(mazo));
-	printf("  Carta en pozo: "); 
+	printf("\t\tCarta en pozo: "); 
 	imprimeColor(obtener(pozo,0)->dato2); 
 	imprimeTipo(obtener(pozo,0)->dato);
 	printf("\n\n");
@@ -229,7 +228,7 @@ void imprimeEstadoJuego(nodo* mazo, nodo* pozo){
 int estableceTurno(int cantidadJugadores, int turno, char sentido){
 
 	int turnoNuevo = 0;
-	if(sentido){
+	if(sentido==1){
 			turnoNuevo = turno+1;
 	}
 	else{
@@ -244,12 +243,12 @@ int estableceTurno(int cantidadJugadores, int turno, char sentido){
 	return turnoNuevo;
 }
 
-boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opcion[]){
+boolean logicaTurno(nodo** jugadores, nodo** mano, nodo** mazo, nodo** pozo, int* turno,char* sentido, char opcion[], char colorCambio){
 	int largoMano = largo(*mano);
 	int opcionNumerica = atoi(opcion);
 	
 	//robar carta
-	if(opcionNumerica == 0 && reglaRobarCarta(*mano, *pozo)){
+	if(opcionNumerica == 0 && reglaRobarCarta(*mano, *pozo, colorCambio)){
 		//saca carta de arriba del mazo
 		nodo* robada = obtener(*mazo, 0);
 		//la pone en la mano
@@ -264,7 +263,26 @@ boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opci
 		//la carta que se quiere descartar...
 		nodo* descartada = obtener(*mano, opcionNumerica-1);
 		//chequeo si se puede botar carta...
-		if(reglaBotarCarta(descartada,*pozo)){
+		if(reglaBotarCarta(descartada,*pozo, colorCambio)){
+			//PARA SALTAR AL JUGADOR SIGUIENTE
+			if(descartada->dato == CARTA_SALTA_TURNO){
+					
+					*turno = estableceTurno(largoMano,*turno,*sentido);
+			}
+			//PARA INVERTIR EL SENTIDO DEL JUEGO
+			if(descartada->dato == CARTA_INVERTIR){
+					if(*sentido == 1){
+						*sentido =-1;
+					}
+					else
+						*sentido =1;
+			}
+			/*
+				//falta el +4
+				//falta el +2
+				//falta el cambia color
+				//no me alcanzo el tiempo :(
+			*/
 			*pozo = push(*pozo, descartada->dato, descartada->dato2);
 			//la borra de la mano...
 			*mano = borrarTipo(*mano, descartada->dato, descartada->dato2);	
@@ -284,9 +302,10 @@ boolean logicaTurno(nodo** mano, nodo** mazo, nodo** pozo, int* turno, char opci
 	return FALSE;
 }
 
-boolean reglaBotarCarta(nodo* carta, nodo* pozo){
+boolean reglaBotarCarta(nodo* carta, nodo* pozo, char colorCambio){
 	//si...
 	if(carta->dato2 != obtener(pozo,0)->dato2 //los colores son diferentes
+		//&& carta->dato2 != colorCambio //los colores son diferentes al color cambio carta
 		&& (carta->dato2 != NOCOLOR && obtener(pozo,0)->dato2 != NOCOLOR) //si no hay SIN COLOR
 		&& carta->dato != obtener(pozo,0)->dato 	// si tienen codigo diferente
 																		){
@@ -297,11 +316,11 @@ boolean reglaBotarCarta(nodo* carta, nodo* pozo){
 	return TRUE;
 }
 
-boolean reglaRobarCarta(nodo* mano, nodo* pozo){
+boolean reglaRobarCarta(nodo* mano, nodo* pozo, char colorCambio){
 	//por cada carta de la mano se aplica regla "reglaBotarCarta()"
 	int i, largoMano = largo(mano);
 	for(i=0;i<largoMano;i++){
-		if(reglaBotarCarta(obtener(mano,i),pozo)){
+		if(reglaBotarCarta(obtener(mano,i),pozo,colorCambio)){
 			//notifica que no puede robar carta
 			return FALSE;
 		}
@@ -310,7 +329,7 @@ boolean reglaRobarCarta(nodo* mano, nodo* pozo){
 	return TRUE;
 }
 
-boolean jugadaAutomatica(nodo** mano, nodo** mazo, nodo** pozo, int* turno){
+boolean jugadaAutomatica(nodo** jugadores,nodo** mano, nodo** mazo, nodo** pozo, int* turno, char* sentido, char colorCambio){
 	//por cada carta de la mano se aplica regla "reglaBotarCarta()"
 	int i, largoMano = largo(*mano);
 	nodo* descarta = NULL; 
@@ -320,12 +339,32 @@ boolean jugadaAutomatica(nodo** mano, nodo** mazo, nodo** pozo, int* turno){
 		//la carta que se quiere descartar...
 		descarta = obtener(*mano, i);
 		//chequeo si se puede botar carta...
-		if(reglaBotarCarta(descarta,*pozo)){
+		if(reglaBotarCarta(descarta,*pozo, colorCambio)){
+			//PARA SALTAR AL JUGADOR SIGUIENTE
+			if(descarta->dato == CARTA_SALTA_TURNO){
+					
+					*turno = estableceTurno(largoMano,*turno,*sentido);
+			}
+			//PARA INVERTIR ELS ENTIDO DEL JUEGO
+			if(descarta->dato == CARTA_INVERTIR){
+					if(*sentido == 1){
+						*sentido =-1;
+					}
+					else
+						*sentido =1;
+			}
+			/*
+				//falta el +4
+				//falta el +2
+				//falta el cambia color
+				//no me alcanzo el tiempo :(
+			*/
 			*pozo = push(*pozo, descarta->dato, descarta->dato2);
 			//la borra de la mano...
 			*mano = borrarTipo(*mano, descarta->dato, descarta->dato2);	
 			//notifica que su turno ha terminado
 			printf(", ha botado carta...\n");
+
 			return TRUE;
 		}
 	}
@@ -360,4 +399,18 @@ nodo* volteaPozo(nodo** mazo, nodo** pozo){
 	mazoRandom = pop(mazoRandom);
 
 	return mazoRandom;
+}
+
+boolean buscarEnMano(nodo** mano, int codigoCarta){
+	int i, largoMano = largo(*mano);
+	nodo* busqueda = NULL;
+
+	for(i=0;i<largoMano;i++){
+		//la carta que se quiere busquedar...
+		busqueda = obtener(*mano, i);
+		//chequeo si se puede botar carta...
+		if(busqueda->dato == codigoCarta){
+			return TRUE;
+		}
+	}
 }

@@ -33,9 +33,7 @@ void main(){
 	pausa();
 	//srand(time(NULL));
 	char opcion[STRING_MAX];
-	char opcionJuego[STRING_MAX];
 	boolean menu = TRUE; //variable del bucle del menu de opciones inicial
-	boolean juego = FALSE; //variable del bucle del juego
 	boolean buclePreJuego = FALSE; //variable del bucle de las opciones del juego
 	boolean bucleTurnosJuego = FALSE; //variable del bucle de las jugadas
 
@@ -65,6 +63,7 @@ void main(){
 		//----------------------------------------------------
 		
 		char cantidadJugadores[STRING_MAX];
+		char nJugadores;
 		nodo* jugadores = NULL; //jugadores
 		nodo* mazo = NULL; //mazo del juego
 		nodo* pozo = NULL; //donde se tiran las cartas
@@ -78,17 +77,18 @@ void main(){
 			printf("Condiciones pre-juego.\n");
 			
 			//cuantos jugadores (incluyendo el humano)
-			printf("ingrese la cantidad de jugadores [2-10]: ");
+			printf("ingrese la cantidad de oponentes [1-11]: ");
 			fflush(stdin);
 			fgets(cantidadJugadores,STRING_MAX, stdin);
-			printf("jugadores: %d\n", atoi(cantidadJugadores));
+			nJugadores = atoi(cantidadJugadores)+1;
+			printf("jugadores: %d\n", nJugadores);
 
-			if(atoi(cantidadJugadores) < 2){
+			if(nJugadores < 2 || nJugadores > 12){
 				buclePreJuego = FALSE;
 			}
 			else{
 				//hacemos un arreglo de listas enlazadas que seran las manos.
-				manos = (nodo**)malloc(sizeof(nodo*)*atoi(cantidadJugadores));
+				manos = (nodo**)malloc(sizeof(nodo*)*nJugadores);
 				
 				//generamos el mazo del juego con orden aleatorio
 				mazo = crearMazo();
@@ -101,7 +101,7 @@ void main(){
 				//agrega los jugadores a una lista...
 					//...los CPU...
 					int t;
-					for(t=0;t<atoi(cantidadJugadores)-1;t++)
+					for(t=0;t<nJugadores-1;t++)
 					{
 						jugadores = push(jugadores, JUGADOR_CPU,-1);
 					}
@@ -110,7 +110,7 @@ void main(){
 
 				//agregamos las manos
 				int j,m;
-				for(j=0;j<atoi(cantidadJugadores);j++){
+				for(j=0;j<nJugadores;j++){
 					manos[j] = NULL;
 					for(m=0; m<MANO_INICIAL;m++){
 						//numero random
@@ -158,7 +158,7 @@ void main(){
 				//si no hay cartas voltea el pozo
 				mazo = volteaPozo(&mazo,&pozo);
 			}
-			turno = estableceTurno(atoi(cantidadJugadores),turno, sentido);
+			turno = estableceTurno(nJugadores,turno, sentido);
 			//imprime estado del juego
 			imprimeEstadoJuego(mazo,pozo);
 			//obtiene el jugador que le corresponde el turno.
@@ -180,7 +180,7 @@ void main(){
 					//--------------------------------------------------
 
 					//si el turno no es exitoso, no se avanza al siguiente jugador...
-					if(!logicaTurno(&manos[turno], &mazo, &pozo, &turno, opcionJuego)){
+					if(!logicaTurno(&jugadores,&manos[turno], &mazo, &pozo, &turno,&sentido, opcionJuego,0)){
 						if(sentido){
 							turno--;
 						}
@@ -217,7 +217,7 @@ void main(){
 				printf("Turno Computadora %d, mano:", turno+1);
 				imprimirCartitas(largo(manos[turno]));
 				//si el turno no es exitoso, no se avanza al siguiente jugador...
-				if(!jugadaAutomatica(&manos[turno], &mazo, &pozo, &turno)){
+				if(!jugadaAutomatica(&jugadores, &manos[turno], &mazo, &pozo, &turno, &sentido,0)){
 					if(sentido){
 						turno--;
 					}
@@ -257,7 +257,7 @@ void main(){
 		//libramos manos
 		if(manos != NULL){
 			int d;
-			for(d=0; d < atoi(cantidadJugadores);d++){
+			for(d=0; d < nJugadores;d++){
 				manos[d] = anular(manos[d]);
 			}
 			free(manos);	
