@@ -1,21 +1,27 @@
 /**
 	@file estructuras.c
 	@brief Estructuras de datos de listas.
+
+	Estructura de datos 'lista', con funciones TDA, se incluyen POP y PUSH, para facil manejo
+	de las listas como pilas.
+
 	@autor Sebastian Araya Vallejos.
 	@date 10/2014
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "elementosJuego.h"
 
+/**
+	@brief renombramiento y declaracion del nodo.
 
+	Se crean listas que tienen un dato tipo 'int' y uno de tipo 'char'.
+*/
 typedef struct nodoSimple{
 	int dato;
 	char dato2;
 	struct nodoSimple* sig;
 }nodo;
-
 
 nodo* crearLista(int inDato, char inDato2){
 	nodo* nueva = (nodo*)malloc(sizeof(nodo));
@@ -125,28 +131,6 @@ void mostrarLista(nodo* lista){
 		else{
 			printf(",");
 			
-		}
-		actual = actual-> sig;
-	}
-}
-
-void mostrarLista2(nodo* lista){
-	
-	if(lista == NULL){
-		printf("{}\n");
-		return;
-	}
-	nodo* actual = lista;
-	printf("{");
-	int i;
-	for(i=0;i<largo(lista);i++){
-		printf("%d",actual -> dato);
-		if(actual->sig == NULL){
-			printf("}\n");
-			return;
-		}
-		else{
-			printf(",");	
 		}
 		actual = actual-> sig;
 	}

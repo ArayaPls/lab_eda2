@@ -4,7 +4,6 @@
 	@autor Sebastian Araya Vallejos.
 	@date 10/2014
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,8 +13,17 @@
 	
 #define TRUE 1
 #define FALSE 0
+
+/**
+	@brief Renombramiento de char para hacer booleanos.
+*/
 typedef char boolean;
 
+/**
+	@brief Renombramiento del nodo y declaracion del nodo.
+
+	Se crean listas que tienen un dato tipo 'int' y uno de tipo 'char'.
+*/
 typedef struct nodoSimple{
 	int dato;
 	char dato2;
@@ -322,6 +330,8 @@ boolean reglaRobarCarta(nodo* mano, nodo* pozo, char colorCambio){
 	for(i=0;i<largoMano;i++){
 		if(reglaBotarCarta(obtener(mano,i),pozo,colorCambio)){
 			//notifica que no puede robar carta
+			printf("No puede robar carta! [ENTER]");
+			pausa();
 			return FALSE;
 		}
 	}
@@ -397,7 +407,6 @@ nodo* volteaPozo(nodo** mazo, nodo** pozo){
 	//luego la primera carta pasa a ser el pozo..
 	*pozo = push(*pozo, obtener(mazoRandom, 0)->dato, obtener(mazoRandom, 0)->dato2);
 	mazoRandom = pop(mazoRandom);
-
 	return mazoRandom;
 }
 

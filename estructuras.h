@@ -2,20 +2,27 @@
 	@file estructuras.h
 	@brief Cabecera y descripcion de estructuras de datos de listas.
 
-	Se crean listas que tienen un dato tipo 'int' y uno de tipo 'char'.
+	Estructura de datos 'lista', con funciones TDA, se incluyen POP y PUSH, para facil manejo
+	de las listas como pilas.
 
 	@autor Sebastian Araya Vallejos.
 	@date 10/2014
 */
-
 #ifndef ESTRUCTURAS_H
 #define ESTRUCTURAS_H
 
-//typedef struct nodoSimple nodo;
+/**
+	@brief renombramiento y declaracion del nodo.
+
+	Se crean listas que tienen un dato tipo 'int' y uno de tipo 'char'.
+*/
 typedef struct nodoSimple nodo;
 
 /**
-	crea una lista con un dato...
+	@brief Crea una lista con un dato.
+	@param inDato Dato del nodo que se quiere agregar.
+	@param inDato2 dato del nodo que se quiere agregar.
+	@returns retorna la lista creada.
 */
 nodo* crearLista(int inDato, char inDato2);
 
@@ -44,12 +51,19 @@ nodo* anular(nodo* lista);
 nodo* insertar(nodo* lista, int inDato, char inDato2, int indice);
 
 /**
-	Inserta un elemento al comienzo de la lista.
+	@brief Inserta un elemento al comienzo de la lista.
+	@param lista Lista a la que se quiere agregar.
+	@param inDato dato del nodo que se quiere agregar.
+	@param inDato2 dato del nodo que se quiere agregar.
+	@returns Retorna la lista con el nodo agregado.
 */
 nodo* push(nodo* lista, int inDato, char inDato2);
 
 /**
-	Borra el primer elemento de la fila.
+	@brief Borra el primer elemento de la fila('pop' de pila).
+	@param lista La lista a la que se quiere eliminar el elemento.
+	@returns Retorna la lista sin el elemento borrado.
+
 */
 nodo* pop(nodo* lista);
 
@@ -59,10 +73,13 @@ nodo* pop(nodo* lista);
 	@returns void.
 */
 void mostrarLista(nodo* lista);
-void mostrarLista2(nodo* lista);
 
 /**
-	Borra el primer elemento que encuentra igual a "inDato".
+	@brief Borra el primer elemento que encuentra igual a "inDato".
+	@param lista La lista que se quiere modificar.
+	@param inDato dato del nodo que se quiere agregar.
+	@ inDato2 dato del nodo que se quiere agregar.
+	@returns Retorna la lista sin el primer nodo de ese tipo que se encuentra en la lista.
 */
 nodo* borrarTipo(nodo* lista, int inDato, char inDato2);
 
@@ -86,7 +103,5 @@ int largo(nodo* lista);
 	@returns Retorna el elemento, si no puede encontrarlo retorna NULL.
 */
 nodo* obtener(nodo* lista, int indice);
-
-
 
 #endif

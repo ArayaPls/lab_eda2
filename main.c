@@ -26,12 +26,11 @@ typedef struct nodoSimple{
 	struct nodoSimple* sig;
 }nodo;
 
-void main(){
+int main(){
 	//mostramos una imagen super fancy
 	imprimeImagenPrincipal("        ");
 	printf("\n\n\tPulsa [ENTER] para comenzar!\n");
 	pausa();
-	//srand(time(NULL));
 	char opcion[STRING_MAX];
 	boolean menu = TRUE; //variable del bucle del menu de opciones inicial
 	boolean buclePreJuego = FALSE; //variable del bucle de las opciones del juego
@@ -269,4 +268,5 @@ void main(){
 	//--------------------------------
 	// FIN bucle menu principal
 	//================================
+	return 0;
 }

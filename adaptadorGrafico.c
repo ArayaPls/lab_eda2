@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 void limpiar(){
 	/*
+	limpiar pantalla a lo salvaje.
 	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	/**/
+	*/
 	#ifdef _WIN32
 	//para windows
     system("cls");
@@ -21,10 +21,15 @@ void limpiar(){
     system ("clear");
 	#endif
 }
+
 void imprimeMenuPrincipal(){
-	printf("Menu\n");
+	printf("O==============================================O\n");
+	printf("|  Menu Principal                              |\n");
+	printf("O==============================================O\n");
+	printf("\nIngrese el numero de la opcion que desea:\n");
 	printf("\t1- Juego nuevo\n");
-	printf("\t2- Salir\n");
+	printf("\t2- Salir\n\n\n");
+
 	printf("\n");
 	printf("\n");
 }

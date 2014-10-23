@@ -15,7 +15,7 @@
 #define AMARILLO 4
 #define NOCOLOR 5
 
-//codigo de tipo 
+//codigo cartas numericas
 #define CARTA_0 0
 #define CARTA_1 1
 #define CARTA_2 2
@@ -26,76 +26,105 @@
 #define CARTA_7 7
 #define CARTA_8 8
 #define CARTA_9 9
-//codigo especiales
+	
+//codigo de cartas especiales
 #define CARTA_INVERTIR 10
 #define CARTA_SALTA_TURNO 11
 #define CARTA_SUMA_2 12
 #define CARTA_CAMBIA_COLOR 13
 #define CARTA_SUMA_4 14
 
-//jugador
+//tipo de jugador
 #define JUGADOR_CPU 15
 #define JUGADOR_HUMANO 16
 
+//cantidad de cartas de mano inicial
 #define MANO_INICIAL 7
 
+/**
+	@brief Renombramiento de char para hacer booleanos.
+*/
 typedef char boolean;
+//definiciones de booleanos
 #define TRUE 1
 #define FALSE 0
 
 /**
+	@brief Imprime cartas miniaturas para reconocimiento visual.
+	@param numero Numero de cartas a dibujar.
+	@returns void
 */
 void imprimirCartitas(int numero);
 
 /**
-	@imprime el tipo del jugador y cuantas cartas tiene.
+	@brief Imprime el tipo del jugador y cuantas cartas tiene.
+	@param jugador Jugadores a mostrar
+	@param mano Manos de cartas a mostrar
+	@returns void 
 */
 void imprimeEstadoJugadores(nodo* jugador, nodo** mano);
 
 /**
-	Muestra las cartas de forma comrensible.
+	@brief Muestra las cartas de forma comrensible.
+	@param lista Lista de cartas a mostrar
+	@returns void
 */
 void mostrarCartas(nodo* lista);
 
 /**
-	Muestra mano del jugador.
+	@brief Muestra mano del jugador.
+	@param lista Mano a mostrar
+	@param tab Espaciado para mostrar.
+	@returns void
 */
 void mostrarMano(nodo* lista, char* tab);
 
 /**
-	Lista las cartas.
+	@brief Lista las cartas.
+	@param lista lista de cartas a mostrar
+	@param tab espaciado para mostrar
+	@returns void
 */
 void listarCartas(nodo* lista, char* tab);
 
 /**
-	Muestra turnos.
+	@brief Muestra el orden de turnos
+	@param lista Lista con turnos de jugadores.
+	@returns void
 */
 void muestraTurnos(nodo* lista);
 
 /**
-	Imprime por consola el color del codigo de forma elegante.
+	@brief Imprime por consola el color del codigo de forma elegante.
+	@param cod Codigo de color.
+	@returns void
 */
 void imprimeColor(int cod);
 
 /**
-	Imprime por consola el tipo del codigo de forma elegante.
+	@brief Imprime por consola el tipo del codigo de forma elegante.
+	@param cod Codigo de tipo.
+	@returns void
 */
 void imprimeTipo(int cod);
 
 
 /**
-	Espera un 'enter'
+	@brief Espera un 'enter' para continuar.
+	@returns void
 */
 void pausa(void);
 
 /**
 	@brief Crea el mazo con cartas de forma aleatoria.
+	@returns Retorna lista con el mazo.
 
 */
 nodo* crearMazo(void);
 
 /**
-	imprime la carta que se ve del pozo.
+	@brief Imprime la carta que se ve del pozo.
+	@returns void
 */
 void imprimeEstadoJuego(nodo* mazo, nodo* pozo);
 
@@ -114,31 +143,52 @@ int estableceTurno(int cantidadJugadores, int turno, char sentido);
 	Ejecuta las acciones y limita las jugadas del jugador humano
 	para que no rompa las reglas del juego.
 
+	@param jugadores
 	@param mano
 	@param mazo
 	@param nodo
-	@returns Retorna falso cuando el turno no fue exitoso.
+	@param turno
+	@param sentido
+	@param cambioColor
+	@returns Retorna verdadero si la jugada fue exitosa, falso de lo contrario.
 */
 boolean logicaTurno(nodo** jugadores, nodo** mano, nodo** mazo, nodo** pozo, int* turno, char* sentido,char opcion[], char colorCambio);
 
 /**
 	@brief Regla que limita cuando se pude botar una carta.
+	@param carta
+	@param pozo
+	@param colorCambio
+	@returns Retorna TRUE si se puede botar carta, FALSE de lo contrario.
 */
 boolean reglaBotarCarta(nodo* carta, nodo* pozo, char colorCambio);
 
 /**
 	@brief Regla que limita cuando se puede robar una carta.
+	@param carta 
+	@param pozo
+	@param colorCambio
+	@returns Retorna TRUE si se puede botar carta, FALSE de lo contrario.
 */
 boolean reglaRobarCarta(nodo* mano, nodo* pozo, char colorCambio);
 
 /**
 	@brief Logica de la jugada de la computadora.
+	@param jugadores
+	@param mano
+	@param mazo
+	@param nodo
+	@param turno
+	@param sentido
+	@param cambioColor
+	@returns Retorna verdadero si la jugada fue exitosa, falso de lo contrario.
 */
 boolean jugadaAutomatica(nodo** jugadores, nodo** mano, nodo** mazo, nodo** pozo, int* turno, char* sentido,char colorCambio);
 
 /**
 	@brief Da vuelta las cartas del pozo al mazo y coloca una carta en el pozo.
-
+	@param mazo
+	@param pozo
 	@returns Retorna el mazo nuevo.
 */
 nodo* volteaPozo(nodo** mazo, nodo** pozo);
